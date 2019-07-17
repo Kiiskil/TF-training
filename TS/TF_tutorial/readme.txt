@@ -25,12 +25,33 @@ const word = (<any>data).name;
 
 console.log(word); // output 'testing'
 
+OR
+
+Use 
+
+*var iris = require("./iris.json")*
+
+because it's a file not a module
+
 //sudo npm install node
 //npm install @tensorflow/tfjs-node
 //sudo npm install @tensorflow/tfjs
 //npm install --save @tensorflow/tfjs
 //sudo npm install --save @tensorflow/tfjs-node
 //sudo npm install --save @tensorflow/tfjs
+//tsc iris.ts OR tsc --module commonjs iris.ts
+//node iris.js
+
+RESULTS
+-------
+
+DONE! 6110
+Tensor
+    [[0.9849404, 0.0002239, 0.0200558],
+     [0.0033981, 0.9268655, 0.0775802],
+     [0.012237 , 0.0280173, 0.9600013]]
+
+so, this NN thinks pretty strongly that first example is Setosa(98%), second Virginica(92%) and third Versicolor(96%)
 
 var kvArray = [{slength: 1, swidth:10},
               {slength: 2, swidth:20},
