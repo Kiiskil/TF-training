@@ -36,7 +36,6 @@ because it's a file not a module
 //sudo npm install node
 //npm install @tensorflow/tfjs-node
 //sudo npm install @tensorflow/tfjs
-//npm install --save @tensorflow/tfjs
 //sudo npm install --save @tensorflow/tfjs-node
 //sudo npm install --save @tensorflow/tfjs
 //tsc iris.ts OR tsc --module commonjs iris.ts
