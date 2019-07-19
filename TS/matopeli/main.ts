@@ -17,17 +17,20 @@ const canvas = document.getElementById('canvas') as HTMLCanvasElement;
 const ctx = <CanvasRenderingContext2D> canvas.getContext('2d');
 
 let lauta = new Lauta(x_koko,y_koko);
-console.log(lauta.grid[0][0]);
 let mato = new Mato();
 let omena = new Omena(getRandomIntInclusive(0, x_koko-1), getRandomIntInclusive(0,y_koko-1));
 
-lauta.piirra(ctx);
-mato.piirra(ctx);
+lauta.piirra(mato,ctx);
+mato.piirra(lauta,ctx);
 omena.piirra(ctx);
- console.log(mato);
- console.log(omena);
-
+ 
 document.addEventListener('keypress', (event) =>{
-    console.log(event.key);
-    mato.Liiku(event.key,ctx);
+    let uusiOmppu: boolean;
+    mato.Liiku(event.key);
+    uusiOmppu = mato.OsumaTarkistus(ctx,lauta,omena);
+    if(uusiOmppu){
+        omena.x_sijainti = getRandomIntInclusive(0,x_koko-1);
+        omena.y_sijainti = getRandomIntInclusive(0,y_koko-1);
+    }
+    omena.piirra(ctx);
 })

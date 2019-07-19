@@ -32,16 +32,38 @@ export class Mato {
     constructor(){
         this.kroppa = [];
         for(let i = 0; i < 5; i++){
-            this.kroppa.push(new MatoPala(5,i))
+            this.kroppa.push(new MatoPala(i,5))
         }
     }
-    Liiku(suunta:string,ctx:CanvasRenderingContext2D):void {
+    Liiku(suunta:string):void {
         let lastIndex = this.kroppa.length-1;
-        if(suunta ==="a"){
-            this.kroppa[lastIndex].x_sijainti = this.kroppa[lastIndex].x_sijainti -1;
+        if(suunta === "a"){
+            this.kroppa.push(new MatoPala(this.kroppa[lastIndex].x_sijainti-1, this.kroppa[lastIndex].y_sijainti))
         }
-        this.paivitaKroppa();
-        this.piirra(ctx);
+        else if(suunta === "d"){
+            this.kroppa.push(new MatoPala(this.kroppa[lastIndex].x_sijainti +1,this.kroppa[lastIndex].y_sijainti))
+        }
+        else if(suunta === "w") {
+            this.kroppa.push(new MatoPala(this.kroppa[lastIndex].x_sijainti,this.kroppa[lastIndex].y_sijainti-1))
+        }
+        else if (suunta === "s"){
+            this.kroppa.push(new MatoPala(this.kroppa[lastIndex].x_sijainti,this.kroppa[lastIndex].y_sijainti+1))
+        }
+        
+    }
+    OsumaTarkistus(ctx:CanvasRenderingContext2D, lauta:Lauta, omena:Omena):boolean{
+        let lastIndex = this.kroppa.length-1;
+        if (this.kroppa[lastIndex].x_sijainti !== omena.x_sijainti || this.kroppa[lastIndex].y_sijainti !== omena.y_sijainti){
+            this.kroppa.splice(0,1);
+            this.paivitaKroppa();
+            this.piirra(lauta,ctx);
+            return false;
+        }
+        else {
+            this.paivitaKroppa();
+            this.piirra(lauta,ctx);
+            return true;
+        }
     }
     Kasva(x:number, y:number):void {
         this.kroppa.push(new MatoPala(x,y))
@@ -52,9 +74,10 @@ export class Mato {
             pala.y_coord = pala.y_koko * pala.y_sijainti;
         });   
     }
-    piirra(ctx:CanvasRenderingContext2D){
+    piirra(lauta:Lauta,ctx:CanvasRenderingContext2D){
         //tallentaa oletuksena nykyisen canvaksen kunnon
         ctx.save();
+        lauta.piirra(this,ctx);
         this.kroppa.forEach(pala => {
             ctx.beginPath();
             ctx.rect(
@@ -91,6 +114,8 @@ export class Omena extends Pala {
     }
     piirra(ctx:CanvasRenderingContext2D){
         //tallentaa oletuksena nykyisen canvaksen kunnon
+        this.x_coord = this.x_koko * this.x_sijainti;
+        this.y_coord = this.y_koko * this.y_sijainti;
         ctx.save();
         ctx.beginPath();
         ctx.rect(
@@ -127,25 +152,29 @@ export default class Lauta {
             }
         }
     }
-    piirra(ctx:CanvasRenderingContext2D){
+    piirra(mato:Mato,ctx:CanvasRenderingContext2D){
         //tallentaa oletuksena nykyisen canvaksen kunnon
         ctx.save();
         this.grid.forEach(rivi => {
             rivi.forEach(pala => {
-                ctx.beginPath();
-            //ctx.rect((lauta.grid[0][0].x_koko), (lauta.grid[0][0].y_koko),lauta.grid[0][0].x_coord, lauta.grid[0][0].y_coord);
-            ctx.rect(
-                pala.x_coord,
-                pala.y_coord,
-                pala.x_koko,
-                pala.y_koko
-                )
-            ctx.fillStyle = pala.vari;
-            ctx.fill();
-            ctx.strokeStyle ="white";
-            ctx.lineWidth = 5;
-            ctx.stroke();
-            ctx.closePath();
+                mato.kroppa.forEach(matopala => {
+                    if(matopala.x_sijainti != pala.x_sijainti || matopala.y_sijainti != pala.y_sijainti){
+                        ctx.beginPath();
+                        //ctx.rect((lauta.grid[0][0].x_koko), (lauta.grid[0][0].y_koko),lauta.grid[0][0].x_coord, lauta.grid[0][0].y_coord);
+                        ctx.rect(
+                            pala.x_coord,
+                            pala.y_coord,
+                            pala.x_koko,
+                            pala.y_koko
+                            )
+                        ctx.fillStyle = pala.vari;
+                        ctx.fill();
+                        ctx.strokeStyle ="white";
+                        ctx.lineWidth = 5;
+                        ctx.stroke();
+                        ctx.closePath();
+                    }
+                });
             });
         });
         ctx.restore();
