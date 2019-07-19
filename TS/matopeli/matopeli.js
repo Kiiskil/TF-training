@@ -49,20 +49,36 @@ var Mato = /** @class */ (function () {
     };
     Mato.prototype.OsumaTarkistus = function (ctx, lauta, omena) {
         var lastIndex = this.kroppa.length - 1;
+        var osuma = false;
+        for (var i = 0; i < this.kroppa.length - 1; i++) {
+            if (this.kroppa[i].x_sijainti == this.kroppa[lastIndex].x_sijainti && this.kroppa[i].y_sijainti == this.kroppa[lastIndex].y_sijainti) {
+                osuma = true;
+                break;
+            }
+            else {
+                osuma = false;
+            }
+        }
+        //osuuko seiniin
+        if (this.kroppa[lastIndex].x_sijainti == lauta.grid.length || this.kroppa[lastIndex].y_sijainti == lauta.grid.length
+            || this.kroppa[lastIndex].x_sijainti < 0 || this.kroppa[lastIndex].y_sijainti < 0) {
+            //gameOver();
+            console.log("GAMEOVER");
+        }
+        else if (osuma) {
+            //gameOver();
+            console.log("GAMEOVER");
+        }
+        //osuuko omenaan
         if (this.kroppa[lastIndex].x_sijainti !== omena.x_sijainti || this.kroppa[lastIndex].y_sijainti !== omena.y_sijainti) {
             this.kroppa.splice(0, 1);
             this.paivitaKroppa();
-            this.piirra(lauta, ctx);
             return false;
         }
         else {
             this.paivitaKroppa();
-            this.piirra(lauta, ctx);
             return true;
         }
-    };
-    Mato.prototype.Kasva = function (x, y) {
-        this.kroppa.push(new MatoPala(x, y));
     };
     Mato.prototype.paivitaKroppa = function () {
         this.kroppa.forEach(function (pala) {
@@ -72,8 +88,8 @@ var Mato = /** @class */ (function () {
     };
     Mato.prototype.piirra = function (lauta, ctx) {
         //tallentaa oletuksena nykyisen canvaksen kunnon
-        ctx.save();
-        lauta.piirra(this, ctx);
+        //ctx.save();
+        //lauta.piirra(this,ctx);
         this.kroppa.forEach(function (pala) {
             ctx.beginPath();
             ctx.rect(pala.x_coord, pala.y_coord, pala.x_koko, pala.y_koko);
@@ -103,16 +119,27 @@ var Omena = /** @class */ (function (_super) {
     __extends(Omena, _super);
     function Omena(x, y) {
         var _this = _super.call(this, x, y) || this;
-        /* this.x_sijainti = x;
-        this.y_sijainti = y; */
         _this.vari = "red";
         return _this;
     }
+    Omena.prototype.tarkistaMato = function (mato) {
+        var osuma;
+        for (var i = 0; i < mato.kroppa.length; i++) {
+            if (mato.kroppa[i].x_sijainti !== this.x_sijainti || mato.kroppa[i].y_sijainti !== this.y_sijainti) {
+                osuma = false;
+            }
+            else {
+                console.log("BINGO");
+                osuma = true;
+                break;
+            }
+        }
+        return osuma;
+    };
     Omena.prototype.piirra = function (ctx) {
-        //tallentaa oletuksena nykyisen canvaksen kunnon
         this.x_coord = this.x_koko * this.x_sijainti;
         this.y_coord = this.y_koko * this.y_sijainti;
-        ctx.save();
+        //ctx.save();
         ctx.beginPath();
         ctx.rect(this.x_coord, this.y_coord, this.x_koko, this.y_koko);
         ctx.fillStyle = this.vari;
@@ -121,7 +148,7 @@ var Omena = /** @class */ (function (_super) {
         ctx.lineWidth = 5;
         ctx.stroke();
         ctx.closePath();
-        ctx.restore();
+        //ctx.restore();
     };
     return Omena;
 }(Pala));
@@ -142,12 +169,13 @@ var Lauta = /** @class */ (function () {
     Lauta.prototype.piirra = function (mato, ctx) {
         //tallentaa oletuksena nykyisen canvaksen kunnon
         ctx.save();
+        //Tää pitää korjata, aiavan saatanan raskas toimitus
+        //Tarkista onko mato missään kohdassa ja jos ei, piirrä se mustaksi
         this.grid.forEach(function (rivi) {
             rivi.forEach(function (pala) {
                 mato.kroppa.forEach(function (matopala) {
                     if (matopala.x_sijainti != pala.x_sijainti || matopala.y_sijainti != pala.y_sijainti) {
                         ctx.beginPath();
-                        //ctx.rect((lauta.grid[0][0].x_koko), (lauta.grid[0][0].y_koko),lauta.grid[0][0].x_coord, lauta.grid[0][0].y_coord);
                         ctx.rect(pala.x_coord, pala.y_coord, pala.x_koko, pala.y_koko);
                         ctx.fillStyle = pala.vari;
                         ctx.fill();
@@ -159,7 +187,7 @@ var Lauta = /** @class */ (function () {
                 });
             });
         });
-        ctx.restore();
+        //ctx.restore();
     };
     return Lauta;
 }());

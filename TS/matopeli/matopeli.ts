@@ -48,25 +48,40 @@ export class Mato {
         }
         else if (suunta === "s"){
             this.kroppa.push(new MatoPala(this.kroppa[lastIndex].x_sijainti,this.kroppa[lastIndex].y_sijainti+1))
-        }
-        
+        } 
     }
     OsumaTarkistus(ctx:CanvasRenderingContext2D, lauta:Lauta, omena:Omena):boolean{
         let lastIndex = this.kroppa.length-1;
+        let osuma: boolean = false;
+        for(let i:number = 0; i < this.kroppa.length-1;i++){
+            if(this.kroppa[i].x_sijainti == this.kroppa[lastIndex].x_sijainti && this.kroppa[i].y_sijainti == this.kroppa[lastIndex].y_sijainti){
+                osuma = true;
+                break;
+            }
+            else{
+                osuma = false;
+            }
+        }
+        //osuuko seiniin
+        if (this.kroppa[lastIndex].x_sijainti == lauta.grid.length || this.kroppa[lastIndex].y_sijainti == lauta.grid.length 
+            || this.kroppa[lastIndex].x_sijainti < 0 ||this.kroppa[lastIndex].y_sijainti < 0){
+                //gameOver();
+                console.log("GAMEOVER")
+        }
+        else if(osuma){
+             //gameOver();
+             console.log("GAMEOVER")
+        }
+        //osuuko omenaan
         if (this.kroppa[lastIndex].x_sijainti !== omena.x_sijainti || this.kroppa[lastIndex].y_sijainti !== omena.y_sijainti){
             this.kroppa.splice(0,1);
             this.paivitaKroppa();
-            this.piirra(lauta,ctx);
             return false;
         }
         else {
             this.paivitaKroppa();
-            this.piirra(lauta,ctx);
             return true;
-        }
-    }
-    Kasva(x:number, y:number):void {
-        this.kroppa.push(new MatoPala(x,y))
+        }   
     }
     paivitaKroppa(){
         this.kroppa.forEach(pala => {
@@ -76,8 +91,8 @@ export class Mato {
     }
     piirra(lauta:Lauta,ctx:CanvasRenderingContext2D){
         //tallentaa oletuksena nykyisen canvaksen kunnon
-        ctx.save();
-        lauta.piirra(this,ctx);
+        //ctx.save();
+        //lauta.piirra(this,ctx);
         this.kroppa.forEach(pala => {
             ctx.beginPath();
             ctx.rect(
@@ -105,18 +120,30 @@ export class MatoPala extends Pala{
     }
 }
 
+
 export class Omena extends Pala {
     constructor(x: number,y:number){
         super(x,y);
-        /* this.x_sijainti = x;
-        this.y_sijainti = y; */
         this.vari = "red";
     }
+    tarkistaMato(mato:Mato):boolean{
+        let osuma: boolean;
+        for(let i = 0; i < mato.kroppa.length; i++){
+            if(mato.kroppa[i].x_sijainti !== this.x_sijainti || mato.kroppa[i].y_sijainti !== this.y_sijainti){
+                osuma = false;
+            }
+            else{
+                console.log("BINGO");
+                osuma = true;
+                break;
+            }
+        }
+        return osuma;   
+    }
     piirra(ctx:CanvasRenderingContext2D){
-        //tallentaa oletuksena nykyisen canvaksen kunnon
         this.x_coord = this.x_koko * this.x_sijainti;
         this.y_coord = this.y_koko * this.y_sijainti;
-        ctx.save();
+        //ctx.save();
         ctx.beginPath();
         ctx.rect(
             this.x_coord,
@@ -130,7 +157,7 @@ export class Omena extends Pala {
         ctx.lineWidth = 5;
         ctx.stroke();
         ctx.closePath();
-        ctx.restore();
+        //ctx.restore();
     }
 }
 
@@ -155,12 +182,13 @@ export default class Lauta {
     piirra(mato:Mato,ctx:CanvasRenderingContext2D){
         //tallentaa oletuksena nykyisen canvaksen kunnon
         ctx.save();
+        //Tää pitää korjata, aiavan saatanan raskas toimitus
+        //Tarkista onko mato missään kohdassa ja jos ei, piirrä se mustaksi
         this.grid.forEach(rivi => {
             rivi.forEach(pala => {
                 mato.kroppa.forEach(matopala => {
                     if(matopala.x_sijainti != pala.x_sijainti || matopala.y_sijainti != pala.y_sijainti){
                         ctx.beginPath();
-                        //ctx.rect((lauta.grid[0][0].x_koko), (lauta.grid[0][0].y_koko),lauta.grid[0][0].x_coord, lauta.grid[0][0].y_coord);
                         ctx.rect(
                             pala.x_coord,
                             pala.y_coord,
@@ -177,7 +205,7 @@ export default class Lauta {
                 });
             });
         });
-        ctx.restore();
+        //ctx.restore();
 
     }
 }
