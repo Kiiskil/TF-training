@@ -15,8 +15,8 @@ var __extends = (this && this.__extends) || (function () {
 exports.__esModule = true;
 var Pala = /** @class */ (function () {
     function Pala(x, y) {
-        this.x_koko = 40;
-        this.y_koko = 40;
+        this.x_koko = 20;
+        this.y_koko = 20;
         this.x_sijainti = x;
         this.y_sijainti = y;
         this.x_coord = this.x_koko * this.x_sijainti;
@@ -25,6 +25,20 @@ var Pala = /** @class */ (function () {
     }
     return Pala;
 }());
+var GameWindow = /** @class */ (function () {
+    function GameWindow(interVal) {
+        this.x_koko = 30;
+        this.y_koko = 30;
+        this.interVal = 100;
+        if (interVal) {
+            this.interVal = interVal;
+        }
+        this.canvas = document.getElementById('canvas');
+        this.ctx = this.canvas.getContext('2d');
+    }
+    return GameWindow;
+}());
+exports.GameWindow = GameWindow;
 var Mato = /** @class */ (function () {
     function Mato() {
         this.kroppa = [];
@@ -34,7 +48,9 @@ var Mato = /** @class */ (function () {
     }
     Mato.prototype.Liiku = function (suunta) {
         var lastIndex = this.kroppa.length - 1;
-        if (suunta === "a") {
+        if (suunta == null) {
+        }
+        else if (suunta === "a") {
             this.kroppa.push(new MatoPala(this.kroppa[lastIndex].x_sijainti - 1, this.kroppa[lastIndex].y_sijainti));
         }
         else if (suunta === "d") {
@@ -47,9 +63,10 @@ var Mato = /** @class */ (function () {
             this.kroppa.push(new MatoPala(this.kroppa[lastIndex].x_sijainti, this.kroppa[lastIndex].y_sijainti + 1));
         }
     };
-    Mato.prototype.OsumaTarkistus = function (ctx, lauta, omena) {
+    Mato.prototype.OsumaTarkistus = function (lauta) {
         var lastIndex = this.kroppa.length - 1;
         var osuma = false;
+        //syökö itsensä
         for (var i = 0; i < this.kroppa.length - 1; i++) {
             if (this.kroppa[i].x_sijainti == this.kroppa[lastIndex].x_sijainti && this.kroppa[i].y_sijainti == this.kroppa[lastIndex].y_sijainti) {
                 osuma = true;
@@ -62,13 +79,13 @@ var Mato = /** @class */ (function () {
         //osuuko seiniin
         if (this.kroppa[lastIndex].x_sijainti == lauta.grid.length || this.kroppa[lastIndex].y_sijainti == lauta.grid.length
             || this.kroppa[lastIndex].x_sijainti < 0 || this.kroppa[lastIndex].y_sijainti < 0) {
-            //gameOver();
-            console.log("GAMEOVER");
+            // GameWindow.prototype.GameOver();
+            osuma = true;
         }
-        else if (osuma) {
-            //gameOver();
-            console.log("GAMEOVER");
-        }
+        return osuma;
+    };
+    Mato.prototype.SoikoOmenan = function (omena) {
+        var lastIndex = this.kroppa.length - 1;
         //osuuko omenaan
         if (this.kroppa[lastIndex].x_sijainti !== omena.x_sijainti || this.kroppa[lastIndex].y_sijainti !== omena.y_sijainti) {
             this.kroppa.splice(0, 1);
@@ -76,6 +93,7 @@ var Mato = /** @class */ (function () {
             return false;
         }
         else {
+            console.log("omena syöty");
             this.paivitaKroppa();
             return true;
         }
@@ -96,7 +114,7 @@ var Mato = /** @class */ (function () {
             ctx.fillStyle = pala.vari;
             ctx.fill();
             ctx.strokeStyle = "white";
-            ctx.lineWidth = 5;
+            ctx.lineWidth = pala.y_koko / 10;
             ctx.stroke();
             ctx.closePath();
         });
@@ -129,7 +147,7 @@ var Omena = /** @class */ (function (_super) {
                 osuma = false;
             }
             else {
-                console.log("BINGO");
+                console.log("Omena yritti syntyä matoon");
                 osuma = true;
                 break;
             }
@@ -173,18 +191,18 @@ var Lauta = /** @class */ (function () {
         //Tarkista onko mato missään kohdassa ja jos ei, piirrä se mustaksi
         this.grid.forEach(function (rivi) {
             rivi.forEach(function (pala) {
-                mato.kroppa.forEach(function (matopala) {
-                    if (matopala.x_sijainti != pala.x_sijainti || matopala.y_sijainti != pala.y_sijainti) {
-                        ctx.beginPath();
-                        ctx.rect(pala.x_coord, pala.y_coord, pala.x_koko, pala.y_koko);
-                        ctx.fillStyle = pala.vari;
-                        ctx.fill();
-                        ctx.strokeStyle = "white";
-                        ctx.lineWidth = 5;
-                        ctx.stroke();
-                        ctx.closePath();
-                    }
-                });
+                /* mato.kroppa.forEach(matopala => {
+                    if(matopala.x_sijainti != pala.x_sijainti || matopala.y_sijainti != pala.y_sijainti){ */
+                ctx.beginPath();
+                ctx.rect(pala.x_coord, pala.y_coord, pala.x_koko, pala.y_koko);
+                ctx.fillStyle = pala.vari;
+                ctx.fill();
+                ctx.strokeStyle = "white";
+                ctx.lineWidth = pala.y_koko / 10;
+                ctx.stroke();
+                ctx.closePath();
+                /* }
+            }); */
             });
         });
         //ctx.restore();
