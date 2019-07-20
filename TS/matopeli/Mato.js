@@ -4,6 +4,12 @@ var Palat_js_1 = require("./Palat.js");
 var Mato = /** @class */ (function () {
     function Mato() {
         this.pisteet = 0;
+        this.faces = {
+            20: "⊙﹏⊙",
+            40: "ಠ_ಠ",
+            60: "ಠ‿ಠ",
+            1000: "ʘ‿ʘ"
+        };
         this.kroppa = [];
         for (var i = 0; i < 5; i++) {
             this.kroppa.push(new Palat_js_1.MatoPala(i, 5));
@@ -12,9 +18,7 @@ var Mato = /** @class */ (function () {
     Mato.prototype.Liiku = function (suunta) {
         var lastIndex = this.kroppa.length - 1;
         //Tee uusi MatoPala siihen suuntaan, johon pelaaja on käskenyt
-        if (suunta == null) {
-        }
-        else if (suunta === "a") {
+        if (suunta === "a") {
             this.kroppa.push(new Palat_js_1.MatoPala(this.kroppa[lastIndex].x_sijainti - 1, this.kroppa[lastIndex].y_sijainti));
         }
         else if (suunta === "d") {
@@ -88,7 +92,12 @@ var Mato = /** @class */ (function () {
             ctx.lineWidth = 1;
             ctx.strokeStyle = "red";
             ctx.font = "8pt sans-serif";
-            ctx.strokeText("ಠ_ಠ", _this.kroppa[lastIndex - 1].x_coord + 1, _this.kroppa[lastIndex - 1].y_coord + 16);
+            for (var key in _this.faces) {
+                if (_this.pisteet < parseInt(key)) {
+                    ctx.strokeText(_this.faces[key].valueOf(), _this.kroppa[lastIndex - 1].x_coord, _this.kroppa[lastIndex - 1].y_coord + 16);
+                    break;
+                }
+            }
             ctx.closePath();
         });
     };

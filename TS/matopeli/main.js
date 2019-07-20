@@ -78,11 +78,16 @@ function init() {
     Piirra(mato, lauta, omena, canvas);
     document.addEventListener('keypress', function (event) {
         //Peli käynnistyy kun pelaaja antaa suunnan
-        suunta = event.key;
-        if (!gameOver) {
-            //Pyöritetään peliä kunnes gameover
-            var timer_1 = setInterval(function () { return Piirra(mato, lauta, omena, canvas, timer_1); }, canvas.interVal);
-            gameOver = true;
+        if (event.key === "w" || event.key === "a" || event.key === "s" || event.key === "d") {
+            suunta = event.key;
+            if (!gameOver) {
+                //Pyöritetään peliä kunnes gameover
+                var timer_1 = setInterval(function () { return Piirra(mato, lauta, omena, canvas, timer_1); }, canvas.interVal);
+                gameOver = true;
+            }
+        }
+        else {
+            alert("WASD-napeilla liikkuu");
         }
     });
 }

@@ -6,6 +6,13 @@ export default class Mato {
     //Madon palat tallennetaan arrayhin (vika on pää)
     kroppa: MatoPala[];
     pisteet:number = 0;
+
+    faces = {
+        20 : "⊙﹏⊙",
+        40 : "ಠ_ಠ",
+        60 : "ಠ‿ಠ",
+        1000:"ʘ‿ʘ",
+    }  
     constructor(){
         this.kroppa = [];
         for(let i = 0; i < 5; i++){
@@ -15,10 +22,7 @@ export default class Mato {
     Liiku(suunta:string):void {
         let lastIndex = this.kroppa.length-1;
         //Tee uusi MatoPala siihen suuntaan, johon pelaaja on käskenyt
-        if(suunta == null){
-
-        }
-        else if(suunta === "a"){
+        if(suunta === "a"){
             this.kroppa.push(new MatoPala(this.kroppa[lastIndex].x_sijainti-1, this.kroppa[lastIndex].y_sijainti))
         }
         else if(suunta === "d"){
@@ -97,7 +101,12 @@ export default class Mato {
             ctx.lineWidth = 1;
             ctx.strokeStyle = "red";
             ctx.font = "8pt sans-serif";
-            ctx.strokeText("ಠ_ಠ", this.kroppa[lastIndex-1].x_coord+1, this.kroppa[lastIndex-1].y_coord+16);
+            for(let key in this.faces){
+                if(this.pisteet < parseInt(key)){
+                    ctx.strokeText(this.faces[key].valueOf(), this.kroppa[lastIndex-1].x_coord, this.kroppa[lastIndex-1].y_coord+16);
+                    break;
+                }
+            }
             ctx.closePath();
         });
     }
