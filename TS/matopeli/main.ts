@@ -40,6 +40,7 @@ function Piirra(mato:Mato,lauta:Lauta, omena:Omena, canvas:GameWindow,timer?:num
             console.log("uusi omena");
             omena.x_sijainti = getRandomIntInclusive(0,canvas.x_koko-1);
             omena.y_sijainti = getRandomIntInclusive(0,canvas.y_koko-1);
+            omena.getFace();
             let osuma = omena.tarkistaMato(mato);
             if(osuma){
                 do{
@@ -59,7 +60,7 @@ function Piirra(mato:Mato,lauta:Lauta, omena:Omena, canvas:GameWindow,timer?:num
     omena.piirra(canvas.ctx);
 };
 
-let getRandomIntInclusive: Function = (min, max) => {
+export let getRandomIntInclusive: Function = (min, max) => {
     return Chance().integer({min,max});
 }
 

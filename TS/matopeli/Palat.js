@@ -13,6 +13,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 exports.__esModule = true;
+var Chance = require("chance");
 var Pala = /** @class */ (function () {
     function Pala(x, y) {
         //Pöydän pala
@@ -38,10 +39,21 @@ var MatoPala = /** @class */ (function (_super) {
     return MatoPala;
 }(Pala));
 exports.MatoPala = MatoPala;
+var getRandomIntInclusive = function (min, max) {
+    return Chance().integer({ min: min, max: max });
+};
 var Omena = /** @class */ (function (_super) {
     __extends(Omena, _super);
     function Omena(x, y) {
         var _this = _super.call(this, x, y) || this;
+        _this.faces = [{
+                1: "⊙﹏⊙",
+                2: "ಠ_ಠ",
+                3: "ಠ‿ಠ",
+                4: "ʘ‿ʘ",
+                5: "(•ω•)"
+            }];
+        _this.faceInd = getRandomIntInclusive(1, Object.keys(_this.faces[0]).length);
         _this.vari = "red";
         return _this;
     }
@@ -60,6 +72,10 @@ var Omena = /** @class */ (function (_super) {
         }
         return osuma;
     };
+    Omena.prototype.getFace = function () {
+        this.faceInd = getRandomIntInclusive(1, Object.keys(this.faces[0]).length);
+        console.log(Object.keys(this.faces[0]).length);
+    };
     Omena.prototype.piirra = function (ctx) {
         this.x_coord = this.x_koko * this.x_sijainti;
         this.y_coord = this.y_koko * this.y_sijainti;
@@ -70,6 +86,13 @@ var Omena = /** @class */ (function (_super) {
         ctx.strokeStyle = this.vari;
         ctx.lineWidth = 5;
         ctx.stroke();
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = "black";
+        ctx.font = "12pt sans-serif";
+        /* console.log(this.faces);
+        console.log(this.faces); */
+        //get random face 
+        ctx.strokeText(this.faces[0][this.faceInd], this.x_coord - 3, this.y_coord + 18);
         ctx.closePath();
     };
     return Omena;

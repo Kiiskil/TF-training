@@ -1,4 +1,5 @@
 import Mato from "./Mato.js"
+import * as Chance from "chance"
 interface PalaConf {
     //Palojen muoto
     x_koko:number;
@@ -8,6 +9,7 @@ interface PalaConf {
     vari: string;
     //Kuinka tehdään constructor interfaceen?
 }
+
 
 export class Pala implements PalaConf{
     //Pöydän pala
@@ -36,7 +38,19 @@ export class MatoPala extends Pala{
     }
 }
 
+let getRandomIntInclusive: Function = (min, max) => {
+    return Chance().integer({min,max});
+}
+
 export class Omena extends Pala {
+    faces = [{
+        1 : "⊙﹏⊙",
+       2 : "ಠ_ಠ",
+        3 : "ಠ‿ಠ",
+        4 : "ʘ‿ʘ",
+        5 : "(•ω•)",
+    }];
+    faceInd : number = getRandomIntInclusive(1, Object.keys(this.faces[0]).length);
     constructor(x: number,y:number){
         super(x,y);
         this.vari = "red";
@@ -56,6 +70,10 @@ export class Omena extends Pala {
         }
         return osuma;   
     }
+    getFace():void{
+        this.faceInd  = getRandomIntInclusive(1, Object.keys(this.faces[0]).length);
+        console.log(Object.keys(this.faces[0]).length);
+    }
     piirra(ctx:CanvasRenderingContext2D){
         this.x_coord = this.x_koko * this.x_sijainti;
         this.y_coord = this.y_koko * this.y_sijainti;
@@ -71,6 +89,14 @@ export class Omena extends Pala {
         ctx.strokeStyle = this.vari;
         ctx.lineWidth = 5;
         ctx.stroke();
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = "black";
+        ctx.font = "12pt sans-serif";
+        
+        /* console.log(this.faces);
+        console.log(this.faces); */
+        //get random face 
+        ctx.strokeText(this.faces[0][this.faceInd], this.x_coord-3, this.y_coord+18);
         ctx.closePath();
     }
 }

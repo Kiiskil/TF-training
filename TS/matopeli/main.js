@@ -35,13 +35,14 @@ function Piirra(mato, lauta, omena, canvas, timer) {
         }
         if (uusiOmppu) {
             console.log("uusi omena");
-            omena.x_sijainti = getRandomIntInclusive(0, canvas.x_koko - 1);
-            omena.y_sijainti = getRandomIntInclusive(0, canvas.y_koko - 1);
+            omena.x_sijainti = exports.getRandomIntInclusive(0, canvas.x_koko - 1);
+            omena.y_sijainti = exports.getRandomIntInclusive(0, canvas.y_koko - 1);
+            omena.getFace();
             var osuma = omena.tarkistaMato(mato);
             if (osuma) {
                 do {
-                    omena.x_sijainti = getRandomIntInclusive(0, canvas.x_koko - 1);
-                    omena.y_sijainti = getRandomIntInclusive(0, canvas.y_koko - 1);
+                    omena.x_sijainti = exports.getRandomIntInclusive(0, canvas.x_koko - 1);
+                    omena.y_sijainti = exports.getRandomIntInclusive(0, canvas.y_koko - 1);
                     osuma = omena.tarkistaMato(mato);
                 } while (osuma);
             }
@@ -55,7 +56,7 @@ function Piirra(mato, lauta, omena, canvas, timer) {
     omena.piirra(canvas.ctx);
 }
 ;
-var getRandomIntInclusive = function (min, max) {
+exports.getRandomIntInclusive = function (min, max) {
     return Chance().integer({ min: min, max: max });
 };
 function init() {
@@ -64,14 +65,14 @@ function init() {
     var lauta = new Lauta_js_1["default"](canvas.x_koko, canvas.y_koko);
     var mato = new Mato_js_1["default"]();
     //omenalle sattumanvarainen sijainti
-    var omena = new Palat_js_1.Omena(getRandomIntInclusive(0, canvas.x_koko - 1), getRandomIntInclusive(0, canvas.y_koko - 1));
+    var omena = new Palat_js_1.Omena(exports.getRandomIntInclusive(0, canvas.x_koko - 1), exports.getRandomIntInclusive(0, canvas.y_koko - 1));
     //Osuuko omena matoon
     var osuma = omena.tarkistaMato(mato);
     if (osuma) {
         do {
             //Looppaa kunnes omenale löytyy vapaa paikka
-            omena.x_sijainti = getRandomIntInclusive(0, canvas.x_koko - 1);
-            omena.y_sijainti = getRandomIntInclusive(0, canvas.y_koko - 1);
+            omena.x_sijainti = exports.getRandomIntInclusive(0, canvas.x_koko - 1);
+            omena.y_sijainti = exports.getRandomIntInclusive(0, canvas.y_koko - 1);
             osuma = omena.tarkistaMato(mato);
         } while (osuma);
     }
