@@ -1,4 +1,4 @@
-export class GameWindow{
+export default class GameWindow{
     //size of the board
     x_koko:number = 30;
     y_koko:number = 30;

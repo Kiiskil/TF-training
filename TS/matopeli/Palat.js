@@ -15,8 +15,9 @@ var __extends = (this && this.__extends) || (function () {
 exports.__esModule = true;
 var Pala = /** @class */ (function () {
     function Pala(x, y) {
-        this.x_koko = 20;
-        this.y_koko = 20;
+        //Pöydän pala
+        this.x_koko = 25;
+        this.y_koko = 25;
         this.x_sijainti = x;
         this.y_sijainti = y;
         this.x_coord = this.x_koko * this.x_sijainti;
@@ -28,6 +29,7 @@ var Pala = /** @class */ (function () {
 exports.Pala = Pala;
 var MatoPala = /** @class */ (function (_super) {
     __extends(MatoPala, _super);
+    //Madon pala
     function MatoPala(x, y) {
         var _this = _super.call(this, x, y) || this;
         _this.vari = "white";
@@ -44,6 +46,7 @@ var Omena = /** @class */ (function (_super) {
         return _this;
     }
     Omena.prototype.tarkistaMato = function (mato) {
+        //Osuuko omenan uusi sijainti matoon
         var osuma;
         for (var i = 0; i < mato.kroppa.length; i++) {
             if (mato.kroppa[i].x_sijainti !== this.x_sijainti || mato.kroppa[i].y_sijainti !== this.y_sijainti) {
@@ -60,7 +63,6 @@ var Omena = /** @class */ (function (_super) {
     Omena.prototype.piirra = function (ctx) {
         this.x_coord = this.x_koko * this.x_sijainti;
         this.y_coord = this.y_koko * this.y_sijainti;
-        //ctx.save();
         ctx.beginPath();
         ctx.rect(this.x_coord, this.y_coord, this.x_koko, this.y_koko);
         ctx.fillStyle = this.vari;
@@ -69,7 +71,6 @@ var Omena = /** @class */ (function (_super) {
         ctx.lineWidth = 5;
         ctx.stroke();
         ctx.closePath();
-        //ctx.restore();
     };
     return Omena;
 }(Pala));

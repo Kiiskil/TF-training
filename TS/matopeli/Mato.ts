@@ -1,8 +1,9 @@
-import {MatoPala} from "./Palat.js"
+import {MatoPala, Pala} from "./Palat.js"
 import Lauta from "./Lauta.js"
 import {Omena} from "./Palat.js"
 
 export default class Mato {
+    //Madon palat tallennetaan arrayhin (vika on pää)
     kroppa: MatoPala[];
     pisteet:number = 0;
     constructor(){
@@ -13,6 +14,7 @@ export default class Mato {
     }
     Liiku(suunta:string):void {
         let lastIndex = this.kroppa.length-1;
+        //Tee uusi MatoPala siihen suuntaan, johon pelaaja on käskenyt
         if(suunta == null){
 
         }
@@ -45,7 +47,6 @@ export default class Mato {
         //osuuko seiniin
         if (this.kroppa[lastIndex].x_sijainti == lauta.grid.length || this.kroppa[lastIndex].y_sijainti == lauta.grid.length 
             || this.kroppa[lastIndex].x_sijainti < 0 ||this.kroppa[lastIndex].y_sijainti < 0){
-           // GameWindow.prototype.GameOver();
            osuma = true;
         }
         return osuma;
@@ -54,11 +55,13 @@ export default class Mato {
         let lastIndex = this.kroppa.length-1;
         //osuuko omenaan
         if (this.kroppa[lastIndex].x_sijainti !== omena.x_sijainti || this.kroppa[lastIndex].y_sijainti !== omena.y_sijainti){
+            //jos ei, poista ensimmäinen MatoPala
             this.kroppa.splice(0,1);
             this.paivitaKroppa();
             return false;
         }
         else{
+            //Älä poista palaa, koska omena syöty
             console.log("omena syöty");
             this.pisteet += 10;
             this.paivitaKroppa();
@@ -67,15 +70,15 @@ export default class Mato {
     }
 
     paivitaKroppa(){
+        //Canvas-sijainnin päivitys
         this.kroppa.forEach(pala => {
             pala.x_coord = pala.x_koko * pala.x_sijainti;
             pala.y_coord = pala.y_koko * pala.y_sijainti;
         });   
     }
-    piirra(lauta:Lauta,ctx:CanvasRenderingContext2D){
-        //tallentaa oletuksena nykyisen canvaksen kunnon
-        //ctx.save();
-        //lauta.piirra(this,ctx);
+    piirra(ctx:CanvasRenderingContext2D){
+        let lastIndex = this.kroppa.length;
+        //Madon joka palan piirto
         this.kroppa.forEach(pala => {
             ctx.beginPath();
             ctx.rect(
@@ -86,11 +89,16 @@ export default class Mato {
                 )
             ctx.fillStyle = pala.vari;
             ctx.fill();
-            ctx.strokeStyle ="white";
-            ctx.lineWidth = pala.y_koko/10;
-            ctx.stroke();
+            //Palojen reunat
+            /* ctx.strokeStyle ="black";
+            ctx.lineWidth = pala.y_koko/20;
+            ctx.stroke(); */
+            //Naama
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = "red";
+            ctx.font = "8pt sans-serif";
+            ctx.strokeText("ಠ_ಠ", this.kroppa[lastIndex-1].x_coord+1, this.kroppa[lastIndex-1].y_coord+16);
             ctx.closePath();
         });
-        ctx.restore();
     }
 }

@@ -20,13 +20,10 @@ export default class Lauta {
     }
     piirra(mato:Mato,ctx:CanvasRenderingContext2D){
         //tallentaa oletuksena nykyisen canvaksen kunnon
-        ctx.save();
-        //Tää pitää korjata, aiavan saatanan raskas toimitus
-        //Tarkista onko mato missään kohdassa ja jos ei, piirrä se mustaksi
+        //ctx.save();
+        //Piirrä kaikki laudan palat mustaksi
         this.grid.forEach(rivi => {
             rivi.forEach(pala => {
-                /* mato.kroppa.forEach(matopala => {
-                    if(matopala.x_sijainti != pala.x_sijainti || matopala.y_sijainti != pala.y_sijainti){ */
                         ctx.beginPath();
                         ctx.rect(
                             pala.x_coord,
@@ -40,11 +37,7 @@ export default class Lauta {
                         ctx.lineWidth = pala.y_koko/10;
                         ctx.stroke();
                         ctx.closePath();
-                    /* }
-                }); */
             });
         });
-        //ctx.restore();
-
     }
 }

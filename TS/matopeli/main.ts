@@ -1,10 +1,10 @@
 import Lauta from "./Lauta.js"
 import Mato from "./Mato.js"
 import {Omena} from "./Palat.js"
-import {GameWindow} from "./GameWindow.js"
+import GameWindow from "./GameWindow.js"
 import * as Chance from "chance"
 import * as _ from "lodash"; //External library named lodash
-import * as p5 from "p5";
+
 //Tee canvas-divin koosta dynaamiesti muuttuva
 //Ompun ilmestymisen sijainti voi jäädä looppaa jos tilaa ei ole (rakenna jonkinlainen pick-järjestelmä)
 //kaksi gameover-boolean-tarkistusta
@@ -22,17 +22,17 @@ function GameOver(interval,pisteet:number){
     }
 }
 
-//let animationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame;
-
 function Piirra(mato:Mato,lauta:Lauta, omena:Omena, canvas:GameWindow,timer?:number){
+    //Tyhjää kenttä
     canvas.ctx.clearRect(0,0, canvas.canvas.width, canvas.canvas.height);
     if(suunta){
+        //jos madolla on suunta
         mato.Liiku(suunta);
         let uusiOmppu: boolean;
         let gameover: boolean;
+        //osuuko mato mihinkään
         gameover = mato.OsumaTarkistus(lauta);
         uusiOmppu = mato.SoikoOmenan(omena);
-        //console.log(uusiOmppu);
         if(gameover){
             GameOver(timer,mato.pisteet);
         }
@@ -50,11 +50,12 @@ function Piirra(mato:Mato,lauta:Lauta, omena:Omena, canvas:GameWindow,timer?:num
                 while(osuma);
             }
         }
-        //animationFrame(()=>Piirra(ctx,mato,lauta,omena));
     }
+    //Päivitä pisteet näytölle
     document.getElementById("pisteet").innerHTML = "Pisteet: "+ mato.pisteet.toString();
+    //Piirrä oliot näytölle
     lauta.piirra(mato,canvas.ctx);
-    mato.piirra(lauta,canvas.ctx);
+    mato.piirra(canvas.ctx);
     omena.piirra(canvas.ctx);
 };
 
@@ -63,14 +64,17 @@ let getRandomIntInclusive: Function = (min, max) => {
 }
 
 function init(){
+    //Tee uudet oliot
     let canvas = new GameWindow();
     let lauta = new Lauta(canvas.x_koko,canvas.y_koko);
     let mato = new Mato();
+    //omenalle sattumanvarainen sijainti
     let omena = new Omena(getRandomIntInclusive(0, canvas.x_koko-1), getRandomIntInclusive(0,canvas.y_koko-1));
+    //Osuuko omena matoon
     let osuma = omena.tarkistaMato(mato);
-    //console.log(osuma);
     if(osuma){
         do{
+            //Looppaa kunnes omenale löytyy vapaa paikka
             omena.x_sijainti = getRandomIntInclusive(0,canvas.x_koko-1);
             omena.y_sijainti = getRandomIntInclusive(0,canvas.y_koko-1);
             osuma = omena.tarkistaMato(mato);
@@ -79,13 +83,13 @@ function init(){
     }
     Piirra(mato,lauta,omena,canvas);
     document.addEventListener('keypress', (event) =>{
-        //console.log(suunta);
+        //Peli käynnistyy kun pelaaja antaa suunnan
         suunta = event.key;
         if(!gameOver){
+            //Pyöritetään peliä kunnes gameover
             let timer = setInterval(()=>Piirra(mato,lauta,omena,canvas,timer), canvas.interVal);
             gameOver = true;
         }
-        //Piirra(ctx,mato,lauta,omena);
     })
 }
 init();

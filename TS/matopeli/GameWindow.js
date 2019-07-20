@@ -15,4 +15,4 @@ var GameWindow = /** @class */ (function () {
     }
     return GameWindow;
 }());
-exports.GameWindow = GameWindow;
+exports["default"] = GameWindow;

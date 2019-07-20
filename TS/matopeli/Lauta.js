@@ -16,13 +16,10 @@ var Lauta = /** @class */ (function () {
     }
     Lauta.prototype.piirra = function (mato, ctx) {
         //tallentaa oletuksena nykyisen canvaksen kunnon
-        ctx.save();
-        //Tää pitää korjata, aiavan saatanan raskas toimitus
-        //Tarkista onko mato missään kohdassa ja jos ei, piirrä se mustaksi
+        //ctx.save();
+        //Piirrä kaikki laudan palat mustaksi
         this.grid.forEach(function (rivi) {
             rivi.forEach(function (pala) {
-                /* mato.kroppa.forEach(matopala => {
-                    if(matopala.x_sijainti != pala.x_sijainti || matopala.y_sijainti != pala.y_sijainti){ */
                 ctx.beginPath();
                 ctx.rect(pala.x_coord, pala.y_coord, pala.x_koko, pala.y_koko);
                 ctx.fillStyle = pala.vari;
@@ -31,11 +28,8 @@ var Lauta = /** @class */ (function () {
                 ctx.lineWidth = pala.y_koko / 10;
                 ctx.stroke();
                 ctx.closePath();
-                /* }
-            }); */
             });
         });
-        //ctx.restore();
     };
     return Lauta;
 }());
