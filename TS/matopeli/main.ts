@@ -60,7 +60,7 @@ function Piirra(mato:Mato,lauta:Lauta, omena:Omena, canvas:GameWindow,timer?:num
     omena.piirra(canvas.ctx);
 };
 
-export let getRandomIntInclusive: Function = (min, max) => {
+let getRandomIntInclusive: Function = (min, max) => {
     return Chance().integer({min,max});
 }
 

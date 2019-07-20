@@ -5,31 +5,39 @@ var Mato = /** @class */ (function () {
     function Mato() {
         this.pisteet = 0;
         this.faces = {
+            //Alle tietyn pisterajan (key)
             20: "⊙﹏⊙",
             40: "ಠ_ಠ",
             60: "ಠ‿ಠ",
             1000: "ʘ‿ʘ"
         };
         this.kroppa = [];
-        for (var i = 0; i < 5; i++) {
+        for (var i = 0; i < 2; i++) {
             this.kroppa.push(new Palat_js_1.MatoPala(i, 5));
         }
     }
     Mato.prototype.Liiku = function (suunta) {
         var lastIndex = this.kroppa.length - 1;
         //Tee uusi MatoPala siihen suuntaan, johon pelaaja on käskenyt
-        if (suunta === "a") {
-            this.kroppa.push(new Palat_js_1.MatoPala(this.kroppa[lastIndex].x_sijainti - 1, this.kroppa[lastIndex].y_sijainti));
+        console.log(suunta);
+        if (suunta === "a" ||
+            suunta === "d" ||
+            suunta === "w" ||
+            suunta === "s") {
+            var suunnat = {
+                "a": -1,
+                "_a": 0,
+                "s": 0,
+                "_s": +1,
+                "w": 0,
+                "_w": -1,
+                "d": +1,
+                "_d": 0
+            };
+            console.log(suunnat[suunta]);
+            this.kroppa.push(new Palat_js_1.MatoPala(this.kroppa[lastIndex].x_sijainti + suunnat[suunta], this.kroppa[lastIndex].y_sijainti + suunnat["_" + suunta]));
         }
-        else if (suunta === "d") {
-            this.kroppa.push(new Palat_js_1.MatoPala(this.kroppa[lastIndex].x_sijainti + 1, this.kroppa[lastIndex].y_sijainti));
-        }
-        else if (suunta === "w") {
-            this.kroppa.push(new Palat_js_1.MatoPala(this.kroppa[lastIndex].x_sijainti, this.kroppa[lastIndex].y_sijainti - 1));
-        }
-        else if (suunta === "s") {
-            this.kroppa.push(new Palat_js_1.MatoPala(this.kroppa[lastIndex].x_sijainti, this.kroppa[lastIndex].y_sijainti + 1));
-        }
+        ;
     };
     Mato.prototype.OsumaTarkistus = function (lauta) {
         var lastIndex = this.kroppa.length - 1;
@@ -63,7 +71,7 @@ var Mato = /** @class */ (function () {
         else {
             //Älä poista palaa, koska omena syöty
             console.log("omena syöty");
-            this.pisteet += 10;
+            this.pisteet += 2;
             this.paivitaKroppa();
             return true;
         }

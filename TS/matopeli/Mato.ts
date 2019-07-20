@@ -1,4 +1,4 @@
-import {MatoPala, Pala} from "./Palat.js"
+import {MatoPala} from "./Palat.js"
 import Lauta from "./Lauta.js"
 import {Omena} from "./Palat.js"
 
@@ -8,6 +8,7 @@ export default class Mato {
     pisteet:number = 0;
 
     faces = {
+        //Alle tietyn pisterajan (key)
         20 : "⊙﹏⊙",
         40 : "ಠ_ಠ",
         60 : "ಠ‿ಠ",
@@ -15,25 +16,35 @@ export default class Mato {
     }  
     constructor(){
         this.kroppa = [];
-        for(let i = 0; i < 5; i++){
+        for(let i = 0; i < 2; i++){
             this.kroppa.push(new MatoPala(i,5))
         }
     }
     Liiku(suunta:string):void {
         let lastIndex = this.kroppa.length-1;
         //Tee uusi MatoPala siihen suuntaan, johon pelaaja on käskenyt
-        if(suunta === "a"){
-            this.kroppa.push(new MatoPala(this.kroppa[lastIndex].x_sijainti-1, this.kroppa[lastIndex].y_sijainti))
-        }
-        else if(suunta === "d"){
-            this.kroppa.push(new MatoPala(this.kroppa[lastIndex].x_sijainti +1,this.kroppa[lastIndex].y_sijainti))
-        }
-        else if(suunta === "w") {
-            this.kroppa.push(new MatoPala(this.kroppa[lastIndex].x_sijainti,this.kroppa[lastIndex].y_sijainti-1))
-        }
-        else if (suunta === "s"){
-            this.kroppa.push(new MatoPala(this.kroppa[lastIndex].x_sijainti,this.kroppa[lastIndex].y_sijainti+1))
-        } 
+        console.log(suunta);
+        if(suunta === "a" ||
+        suunta === "d" ||
+        suunta === "w" ||
+        suunta === "s"){
+            //y-akselin suunta-stringiin lisätty alaviiva neljän parin saamiseksi (pareilla kutsutaan suunnanvalitsimia)
+            let suunnat = {
+                "a" : -1,
+                "_a" : 0,
+                "s" : 0,
+                "_s" : +1,
+                "w" : 0,
+                "_w" : -1,
+                "d" : +1,
+                "_d" : 0
+            }
+            console.log(suunnat[suunta]);
+            this.kroppa.push(
+                new MatoPala(this.kroppa[lastIndex].x_sijainti + suunnat[suunta], 
+                this.kroppa[lastIndex].y_sijainti + suunnat["_"+suunta])
+                );
+        };
     }
     OsumaTarkistus(lauta:Lauta):boolean{
         let lastIndex = this.kroppa.length-1;
@@ -67,7 +78,7 @@ export default class Mato {
         else{
             //Älä poista palaa, koska omena syöty
             console.log("omena syöty");
-            this.pisteet += 10;
+            this.pisteet += 2;
             this.paivitaKroppa();
             return true;
         } 

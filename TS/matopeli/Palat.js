@@ -51,7 +51,9 @@ var Omena = /** @class */ (function (_super) {
                 2: "ಠ_ಠ",
                 3: "ಠ‿ಠ",
                 4: "ʘ‿ʘ",
-                5: "(•ω•)"
+                5: "(•ω•)",
+                6: "(°ʖ°)",
+                7: "(ツ)"
             }];
         _this.faceInd = getRandomIntInclusive(1, Object.keys(_this.faces[0]).length);
         _this.vari = "red";
