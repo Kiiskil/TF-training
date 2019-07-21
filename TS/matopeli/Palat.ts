@@ -20,10 +20,10 @@ export class Pala implements PalaConf{
     x_coord:number;
     y_coord:number;
     vari: string;
-    constructor(x:number, y:number)
+    constructor(x_sijainti:number, y_sijainti:number)
     {
-        this.x_sijainti = x;
-        this.y_sijainti = y;
+        this.x_sijainti = x_sijainti;
+        this.y_sijainti = y_sijainti;
         this.x_coord = this.x_koko * this.x_sijainti;
         this.y_coord = this.y_koko * this.y_sijainti;
         this.vari = "black";
@@ -32,8 +32,8 @@ export class Pala implements PalaConf{
 
 export class MatoPala extends Pala{
     //Madon pala
-    constructor(x: number,y:number){
-        super(x,y);
+    constructor(x_sijainti:number, y_sijainti:number){
+        super(x_sijainti,y_sijainti);
         this.vari = "white";
     }
 }
@@ -53,8 +53,8 @@ export class Omena extends Pala {
         7 : "(ツ)",
     }];
     faceInd : number = getRandomIntInclusive(1, Object.keys(this.faces[0]).length);
-    constructor(x: number,y:number){
-        super(x,y);
+    constructor(x_sijainti:number, y_sijainti:number){
+        super(x_sijainti,y_sijainti);
         this.vari = "red";
     }
     tarkistaMato(mato:Mato):boolean{
