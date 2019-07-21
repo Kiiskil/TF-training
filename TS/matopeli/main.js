@@ -83,6 +83,8 @@ function init() {
             suunta = event.key;
             if (!gameOver) {
                 //Pyöritetään peliä kunnes gameover
+                //Pelkkä piirra() ilman intervalia ja gameoveria mahdollistaa liikkumisen haluttaessa
+                //Piirra(mato,lauta,omena,canvas);
                 var timer_1 = setInterval(function () { return Piirra(mato, lauta, omena, canvas, timer_1); }, canvas.interVal);
                 gameOver = true;
             }

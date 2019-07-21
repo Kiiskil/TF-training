@@ -15,12 +15,12 @@ var __extends = (this && this.__extends) || (function () {
 exports.__esModule = true;
 var Chance = require("chance");
 var Pala = /** @class */ (function () {
-    function Pala(x, y) {
+    function Pala(x_sijainti, y_sijainti) {
         //Pöydän pala
         this.x_koko = 25;
         this.y_koko = 25;
-        this.x_sijainti = x;
-        this.y_sijainti = y;
+        this.x_sijainti = x_sijainti;
+        this.y_sijainti = y_sijainti;
         this.x_coord = this.x_koko * this.x_sijainti;
         this.y_coord = this.y_koko * this.y_sijainti;
         this.vari = "black";
@@ -31,8 +31,8 @@ exports.Pala = Pala;
 var MatoPala = /** @class */ (function (_super) {
     __extends(MatoPala, _super);
     //Madon pala
-    function MatoPala(x, y) {
-        var _this = _super.call(this, x, y) || this;
+    function MatoPala(x_sijainti, y_sijainti) {
+        var _this = _super.call(this, x_sijainti, y_sijainti) || this;
         _this.vari = "white";
         return _this;
     }
@@ -44,8 +44,8 @@ var getRandomIntInclusive = function (min, max) {
 };
 var Omena = /** @class */ (function (_super) {
     __extends(Omena, _super);
-    function Omena(x, y) {
-        var _this = _super.call(this, x, y) || this;
+    function Omena(x_sijainti, y_sijainti) {
+        var _this = _super.call(this, x_sijainti, y_sijainti) || this;
         _this.faces = [{
                 1: "⊙﹏⊙",
                 2: "ಠ_ಠ",
@@ -90,10 +90,10 @@ var Omena = /** @class */ (function (_super) {
         ctx.stroke();
         ctx.lineWidth = 1;
         ctx.strokeStyle = "black";
-        ctx.font = "12pt sans-serif";
+        ctx.font = "8pt sans-serif";
         /* console.log(this.faces);
         console.log(this.faces); */
-        //get random face 
+        //get random face
         ctx.strokeText(this.faces[0][this.faceInd], this.x_coord - 3, this.y_coord + 18);
         ctx.closePath();
     };

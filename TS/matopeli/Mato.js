@@ -24,6 +24,7 @@ var Mato = /** @class */ (function () {
             suunta === "d" ||
             suunta === "w" ||
             suunta === "s") {
+            //y-akselin suunta-stringiin lisätty alaviiva neljän parin saamiseksi (pareilla kutsutaan suunnanvalitsimia)
             var suunnat = {
                 "a": -1,
                 "_a": 0,

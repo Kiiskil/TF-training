@@ -93,11 +93,11 @@ export class Omena extends Pala {
         ctx.stroke();
         ctx.lineWidth = 1;
         ctx.strokeStyle = "black";
-        ctx.font = "12pt sans-serif";
+        ctx.font = "8pt sans-serif";
         
         /* console.log(this.faces);
         console.log(this.faces); */
-        //get random face 
+        //get random face
         ctx.strokeText(this.faces[0][this.faceInd], this.x_coord-3, this.y_coord+18);
         ctx.closePath();
     }
