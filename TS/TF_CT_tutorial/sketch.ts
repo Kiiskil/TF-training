@@ -1,5 +1,6 @@
 import * as p5 from "p5";
 import * as tf from "@tensorflow/tfjs"
+import * as layer from "./layers.js"
 
 var sketch = function (p: p5) {
     //one way to use p5 with TS
@@ -8,10 +9,21 @@ var sketch = function (p: p5) {
     //matrix (rank2) = matrix of numbers = tensor2d
     //tensor3d (rank 3) = array of matrices
 
+    //Lowest level : core API -- highest amount of manual tinkering
+    //Middle level : layers API --middle level amount of tinkering (Keras-project)
+    //Highest level : ML5-lib -- Least amount of tinkering
+
     //Check CT-video on *tensorflow promises*
     p.setup = function () {
         p.noCanvas();
-
+        
+        let model = layer.Layers.model;
+        console.log(model);
+        
+        
+        
+        
+        
         const values: number[] = [];
         for(let i: number = 0; i < 30; i++){
             values.push(p.random(0,100));
@@ -117,8 +129,7 @@ var sketch = function (p: p5) {
             //If one wishes to use a tensor later, it can be kept with 
             //tf.keep(a);
         });
-        console.log(tf.memory().numTensors);//Check how many tensors are stored in memory
-        
+        //console.log(tf.memory().numTensors);//Check how many tensors are stored in memory   
     }
   }
   
