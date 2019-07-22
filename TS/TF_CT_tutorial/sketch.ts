@@ -59,27 +59,66 @@ var sketch = function (p: p5) {
         let f = e.add(d);
         // a.print();
         // b.print();
-        f.print();
+        //f.print();
+        //Next commented code is used in draw()
+        /* const values1: number[] = [];
+        for(let i: number = 0; i < 15; i++){
+            values1.push(p.random(0,100));
+        }
+
+        const shape1:[number, number] = [5, 3];
+        let a = tf.tensor2d(values1, shape1,'int32');
+        let b = tf.tensor2d(values1, shape1,'int32');
+        let bb = b.transpose();
+
+        // a.print();
+        // b.print();
+        
+        //c = a.mul(b) //element-wise multiplication
+        let c = a.matMul(bb); //matrix-multiplication. Takes ONLY rank2-tensors, AND shapes must be comptatible
+        //meaning that columns.length of first matrix must be same as rows.length of second matrix
+        c.print(); */
+
+        
+    }
+  
+    p.draw = function () {
+        //Draw in p5 is automatically executed (kinda like setInterval())
+        //MEMORY MANAGEMENT
+        /**
+         * memory leak is something in program, which continues to allocate memory over and over --> stack overflow
+         * because tensors are immutable, they aren't deleted so they just accumulate in memory
+         * so they must be manually disposed
+         */
         const values1: number[] = [];
         for(let i: number = 0; i < 15; i++){
             values1.push(p.random(0,100));
         }
 
         const shape1:[number, number] = [5, 3];
-        const shape2:[number, number] = [3, 5];
-        let a = tf.tensor2d(values1, shape1,'int32');
-        let b = tf.tensor2d(values1, shape2,'int32');
-
-        // a.print();
-        // b.print();
         
-        //c = a.mul(b) //element-wise multiplication
-        let c = a.matMul(b); //matrix-multiplication. Takes ONLY rank2-tensors, AND shapes must be comptatible
-        //meaning that columns.length of first matrix must be same as rows.length of second matrix
-        c.print();
-    }
-  
-    p.draw = function () {
+        //One way to get rid of unused tensors is tf.tidy(), which is a wrapper. It executes provided function and reallocates used memory
+        //You can use callback in tidy() itself, or make a NAMED FUNCTION which is passed to tidy() as param
+        tf.tidy(() => {
+            let a = tf.tensor2d(values1, shape1,'int32');
+            let b = tf.tensor2d(values1, shape1,'int32');
+            let b_t = b.transpose();
+            let c = a.matMul(b_t); //matrix-multiplication. Takes ONLY rank2-tensors, AND shapes must be comptatible
+            // a.print();
+            // b.print();
+            
+            //c = a.mul(b) //element-wise multiplication
+            //Disposing unused tensors manually
+        /*     a.dispose();
+            b.dispose();
+            c.dispose(),
+            b_t.dispose(); */
+            
+            //If one wishes to use a tensor later, it can be kept with 
+            //tf.keep(a);
+        });
+        console.log(tf.memory().numTensors);//Check how many tensors are stored in memory
+        
     }
   }
   
