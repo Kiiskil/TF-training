@@ -84,15 +84,15 @@ var sketch = function (p: p5) {
     }
   
     p.draw = function () {
-        p.noLoop();
+        //p.noLoop();
         p.background(0);
         
-        model.fit(xs,ys,trainConf).then((result) =>{
+        trainModel().then((result) =>{
             console.log("TRAINED");
             console.log(result.history.loss[0]);
             
             //REKURSIIVINEN LOOPPI, KORJAA toimimaan ilman noLoop()-funktiota
-            p.draw();  
+           // p.draw();  
             let index: number = 0;
             let response = model.predict(inputs) as tf.Tensor;
 

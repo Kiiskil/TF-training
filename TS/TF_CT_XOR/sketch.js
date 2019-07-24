@@ -118,13 +118,13 @@ var sketch = function (p) {
         });
     }
     p.draw = function () {
-        p.noLoop();
+        //p.noLoop();
         p.background(0);
         model.fit(xs, ys, trainConf).then(function (result) {
             console.log("TRAINED");
             console.log(result.history.loss[0]);
             //REKURSIIVINEN LOOPPI, KORJAA toimimaan ilman noLoop()-funktiota
-            p.draw();
+            // p.draw();  
             var index = 0;
             var response = model.predict(inputs);
             for (var i = 0; i < cols; i++) {
