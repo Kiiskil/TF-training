@@ -20,10 +20,6 @@ var sketch = function (p: p5) {
         let model = layer.Layers.model;
         console.log(model);
         
-        
-        
-        
-        
         const values: number[] = [];
         for(let i: number = 0; i < 30; i++){
             values.push(p.random(0,100));
