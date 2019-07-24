@@ -25,6 +25,10 @@ export namespace Layers {
      * 5. Compile
      *  - Optimizer
      *  - Loss-function
+     * 6. Fit
+     *  - Get history
+     * 7. Predict
+     *  - Get history
      */
     export const model = tf.sequential();
 

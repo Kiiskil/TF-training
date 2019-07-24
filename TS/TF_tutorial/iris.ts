@@ -9,6 +9,7 @@ var irisTesting = require( "./iris-testing.json")
 const trainingData = tf.tensor2d(iris.map(item => [
     item.sepal_length, item.sepal_width, item.petal_length, item.petal_width,
 ]))
+
 const outputData = tf.tensor2d(iris.map(item => [
     item.species === "setosa" ? 1 : 0,
     item.species === "virginica" ? 1 : 0,

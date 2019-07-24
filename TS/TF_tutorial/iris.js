@@ -10,6 +10,7 @@ var irisTesting = require("./iris-testing.json");
 var trainingData = tf.tensor2d(iris.map(function (item) { return [
     item.sepal_length, item.sepal_width, item.petal_length, item.petal_width,
 ]; }));
+trainingData.print();
 var outputData = tf.tensor2d(iris.map(function (item) { return [
     item.species === "setosa" ? 1 : 0,
     item.species === "virginica" ? 1 : 0,
@@ -54,7 +55,8 @@ model.fit(trainingData, outputData, { epochs: 100 }) //Epochs = how many times t
     .then(function (history) {
     console.log("DONE!", Date.now() - startTime);
     //console.log(history);
+    //Test NN
     //.print does not work straight away on TS, but you have to notify the compiler which on it is (type assertion)
     model.predict(testingData).print();
 });
-//Test NN
+//Created a NN, added 3 layers to it, trained it and tested it. =)
