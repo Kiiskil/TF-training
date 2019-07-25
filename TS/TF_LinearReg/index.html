@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>Matopeli</title>
+        <title>Linear Regression with TensorFlow</title>
     </head>
     <body>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/systemjs/0.20.12/system.js"></script>
@@ -8,8 +8,6 @@
             /*External module (JS-library) lodash*/
            SystemJS.config({
                map: {
-                   'lodash': './node_modules/lodash/lodash.js',
-                   'chance':'./node_modules/chance/chance.js',
                    'p5': './node_modules/p5/lib/p5.js',
                    //"@tensorflow/tfjs": "./node_modules/@tensorflow/tfjs/dist/index.js", //gets all the modules
                    "@tensorflow/tfjs": "./node_modules/@tensorflow/tfjs/dist/tf.js"
@@ -18,10 +16,8 @@
             /* Next, we need to add in the call for SystemJS to load our 
             main.js - the compiled output from our main.ts file. 
             To do that, we use the SystemJS.import() function. */
-            SystemJS.import("main.js")
+            SystemJS.import("sketch.js")
         </script>
-                <canvas id="canvas" width="750" height="750">
-                </canvas>
-                <div id="pisteet"></div>
+                
     </body>
 </html>

@@ -37,6 +37,7 @@ var Mato = /** @class */ (function () {
             };
             console.log(suunnat[suunta]);
             this.kroppa.push(new Palat_js_1.MatoPala(this.kroppa[lastIndex].x_sijainti + suunnat[suunta], this.kroppa[lastIndex].y_sijainti + suunnat["_" + suunta]));
+            //this.paivitaKroppa();
         }
         ;
     };
@@ -66,27 +67,25 @@ var Mato = /** @class */ (function () {
         if (this.kroppa[lastIndex].x_sijainti !== omena.x_sijainti || this.kroppa[lastIndex].y_sijainti !== omena.y_sijainti) {
             //jos ei, poista ensimmäinen MatoPala
             this.kroppa.splice(0, 1);
-            this.paivitaKroppa();
             return false;
         }
         else {
             //Älä poista palaa, koska omena syöty
             console.log("omena syöty");
             this.pisteet += 2;
-            this.paivitaKroppa();
             return true;
         }
     };
     Mato.prototype.paivitaKroppa = function () {
         //Canvas-sijainnin päivitys
-        this.kroppa.forEach(function (pala) {
-            pala.x_coord = pala.x_koko * pala.x_sijainti;
-            pala.y_coord = pala.y_koko * pala.y_sijainti;
-        });
     };
     Mato.prototype.piirra = function (ctx) {
         var _this = this;
         var lastIndex = this.kroppa.length;
+        this.kroppa.forEach(function (pala) {
+            pala.x_coord = pala.x_koko * pala.x_sijainti;
+            pala.y_coord = pala.y_koko * pala.y_sijainti;
+        });
         //Madon joka palan piirto
         this.kroppa.forEach(function (pala) {
             ctx.beginPath();

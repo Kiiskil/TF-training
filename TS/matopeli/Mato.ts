@@ -6,6 +6,7 @@ export default class Mato {
     //Madon palat tallennetaan arrayhin (vika on pää)
     kroppa: MatoPala[];
     pisteet:number = 0;
+    suunta:string;
 
     faces = {
         //Alle tietyn pisterajan (key)
@@ -23,11 +24,11 @@ export default class Mato {
     Liiku(suunta:string):void {
         let lastIndex = this.kroppa.length-1;
         //Tee uusi MatoPala siihen suuntaan, johon pelaaja on käskenyt
-        console.log(suunta);
-        if(suunta === "a" ||
-        suunta === "d" ||
-        suunta === "w" ||
-        suunta === "s"){
+        this.suunta = suunta;
+        if(this.suunta === "a" ||
+        this.suunta === "d" ||
+        this.suunta === "w" ||
+        this.suunta === "s"){
             //y-akselin suunta-stringiin lisätty alaviiva neljän parin saamiseksi (pareilla kutsutaan suunnanvalitsimia)
             let suunnat = {
                 "a" : -1,
@@ -39,11 +40,12 @@ export default class Mato {
                 "d" : +1,
                 "_d" : 0
             }
-            console.log(suunnat[suunta]);
+            
             this.kroppa.push(
                 new MatoPala(this.kroppa[lastIndex].x_sijainti + suunnat[suunta], 
                 this.kroppa[lastIndex].y_sijainti + suunnat["_"+suunta])
-                );
+            );
+            //this.paivitaKroppa();
         };
     }
     OsumaTarkistus(lauta:Lauta):boolean{
@@ -72,27 +74,28 @@ export default class Mato {
         if (this.kroppa[lastIndex].x_sijainti !== omena.x_sijainti || this.kroppa[lastIndex].y_sijainti !== omena.y_sijainti){
             //jos ei, poista ensimmäinen MatoPala
             this.kroppa.splice(0,1);
-            this.paivitaKroppa();
             return false;
         }
         else{
             //Älä poista palaa, koska omena syöty
             console.log("omena syöty");
             this.pisteet += 2;
-            this.paivitaKroppa();
             return true;
         } 
     }
 
     paivitaKroppa(){
         //Canvas-sijainnin päivitys
-        this.kroppa.forEach(pala => {
-            pala.x_coord = pala.x_koko * pala.x_sijainti;
-            pala.y_coord = pala.y_koko * pala.y_sijainti;
-        });   
+        
     }
     piirra(ctx:CanvasRenderingContext2D){
         let lastIndex = this.kroppa.length;
+        
+        this.kroppa.forEach(pala => {
+            pala.x_coord = pala.x_koko * pala.x_sijainti;
+            pala.y_coord = pala.y_koko * pala.y_sijainti;
+        });  
+        
         //Madon joka palan piirto
         this.kroppa.forEach(pala => {
             ctx.beginPath();

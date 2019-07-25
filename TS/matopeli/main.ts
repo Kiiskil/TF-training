@@ -4,6 +4,8 @@ import {Omena} from "./Palat.js"
 import GameWindow from "./GameWindow.js"
 import * as Chance from "chance"
 import * as _ from "lodash"; //External library named lodash
+import * as p5 from "p5";
+import * as tf from "@tensorflow/tfjs"
 
 //Tee canvas-divin koosta dynaamiesti muuttuva
 //Ompun ilmestymisen sijainti voi jäädä looppaa jos tilaa ei ole (rakenna jonkinlainen pick-järjestelmä)
@@ -71,18 +73,22 @@ function init(){
     let mato = new Mato();
     //omenalle sattumanvarainen sijainti
     let omena = new Omena(getRandomIntInclusive(0, canvas.x_koko-1), getRandomIntInclusive(0,canvas.y_koko-1));
+    
     //Osuuko omena matoon
     let osuma = omena.tarkistaMato(mato);
     if(osuma){
         do{
-            //Looppaa kunnes omenale löytyy vapaa paikka
+            //Looppaa kunnes omenalle löytyy vapaa paikka
             omena.x_sijainti = getRandomIntInclusive(0,canvas.x_koko-1);
             omena.y_sijainti = getRandomIntInclusive(0,canvas.y_koko-1);
             osuma = omena.tarkistaMato(mato);
         }
         while(osuma);
     }
+    
     Piirra(mato,lauta,omena,canvas);
+    
+    //Add event listener for keypresses
     document.addEventListener('keypress', (event) =>{
         //Peli käynnistyy kun pelaaja antaa suunnan
         if(event.key === "w" || event.key === "a" || event.key === "s" || event.key === "d"){
