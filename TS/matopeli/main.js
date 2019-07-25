@@ -70,13 +70,14 @@ function init() {
     var osuma = omena.tarkistaMato(mato);
     if (osuma) {
         do {
-            //Looppaa kunnes omenale löytyy vapaa paikka
+            //Looppaa kunnes omenalle löytyy vapaa paikka
             omena.x_sijainti = getRandomIntInclusive(0, canvas.x_koko - 1);
             omena.y_sijainti = getRandomIntInclusive(0, canvas.y_koko - 1);
             osuma = omena.tarkistaMato(mato);
         } while (osuma);
     }
     Piirra(mato, lauta, omena, canvas);
+    //Add event listener for keypresses
     document.addEventListener('keypress', function (event) {
         //Peli käynnistyy kun pelaaja antaa suunnan
         if (event.key === "w" || event.key === "a" || event.key === "s" || event.key === "d") {

@@ -9,7 +9,10 @@
            SystemJS.config({
                map: {
                    'lodash': './node_modules/lodash/lodash.js',
-                   'chance':'./node_modules/chance/chance.js'
+                   'chance':'./node_modules/chance/chance.js',
+                   'p5': './node_modules/p5/lib/p5.js',
+                   //"@tensorflow/tfjs": "./node_modules/@tensorflow/tfjs/dist/index.js", //gets all the modules
+                   "@tensorflow/tfjs": "./node_modules/@tensorflow/tfjs/dist/tf.js"
                }
            });
             /* Next, we need to add in the call for SystemJS to load our 
