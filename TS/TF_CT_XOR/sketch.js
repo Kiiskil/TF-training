@@ -37,12 +37,27 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 var p5 = require("p5");
 var tf = require("@tensorflow/tfjs");
+var div_grid = document.createElement('div');
+var div_info = document.createElement('div');
+var div_info_1 = document.createElement('div');
+div_grid.id = 'div_grid';
+div_info.id = 'div_info';
+div_info_1.id = 'div_info_1';
+div_grid.setAttribute("style", "width:" + 400 + "px;height:" + 400 + "px;float:left;");
+div_info.setAttribute("style", "width:" + 400 + "px;height:" + 200 + "px;float:left;");
+div_info_1.setAttribute("style", "width:" + 400 + "px;height:" + 200 + "px;float:left;");
+window.document.body.appendChild(div_grid);
+window.document.body.appendChild(div_info);
+window.document.body.appendChild(div_info_1);
 var sketch = function (p) {
     var resolution = 20;
     var cols;
     var rows;
     var model;
     var inputs;
+    var canvasDiv = document.getElementById('div_grid');
+    var infoDiv = document.getElementById('div_info');
+    var canvas;
     //XOR-problem with Tensorflow
     //Coding challenge #106: XOR Problem with Tensorflow.js
     var training_data = [{
@@ -62,8 +77,8 @@ var sketch = function (p) {
             outputs: [0]
         }];
     var trainConf = {
-        /*         verbose : 1,  //0,1,2
-                epochs : 1, */
+        verbose: 1,
+        epochs: 10,
         shuffle: true
     };
     //console.log(training_data);
@@ -74,7 +89,10 @@ var sketch = function (p) {
         return item.outputs;
     }));
     p.setup = function () {
-        p.createCanvas(400, 400);
+        var width = canvasDiv.offsetWidth;
+        canvas = p.createCanvas(width, 400);
+        canvas.id("canvas");
+        canvas.parent("div_grid");
         cols = p.width / resolution;
         rows = p.height / resolution;
         var data = [];
@@ -117,26 +135,48 @@ var sketch = function (p) {
             });
         });
     }
+    var count = 0;
     p.draw = function () {
-        //p.noLoop();
+        var response_values;
+        p.noLoop();
         p.background(0);
-        model.fit(xs, ys, trainConf).then(function (result) {
-            console.log("TRAINED");
-            console.log(result.history.loss[0]);
-            //REKURSIIVINEN LOOPPI, KORJAA toimimaan ilman noLoop()-funktiota
-            // p.draw();  
-            var index = 0;
+        tf.tidy(function () {
+            trainModel().then(function (result) {
+                count++;
+                console.log("TRAINED");
+                console.log(result.history.loss[0]);
+                infoDiv.innerHTML = 'Training Rounds: ' + count + '<br> MeanSquaredError: ' + result.history.loss[0].toFixed(5) + '<br />';
+                p.redraw();
+            });
+        });
+        //REKURSIIVINEN LOOPPI, KORJAA toimimaan ilman noLoop()-funktiota
+        // p.draw();  
+        var index = 0;
+        tf.tidy(function () {
             var response = model.predict(inputs);
+            response_values = response.dataSync();
             for (var i = 0; i < cols; i++) {
                 for (var j = 0; j < rows; j++) {
                     //p.noStroke();
                     //console.log(response.dataSync()[0]);
-                    p.fill(response.dataSync()[index] * 255);
+                    p.fill(response_values[index] * 255);
                     p.rect(i * resolution, j * resolution, resolution, resolution);
                     index++;
                 }
             }
+            ;
+        });
+        infoDiv.append('Memory leaks: ' + tf.memory().numTensors);
+        canvas.mouseClicked(function () {
+            div_info_1.innerHTML = '\nLocation info:<br>   -location: x: ' + (Math.floor(p.mouseX / cols)).toString()
+                + ' y: ' + (Math.floor(p.mouseY / rows)).toString()
+                + '<br>';
+            var index = (Math.floor(p.mouseY / rows))
+                +
+                    ((Math.floor(p.mouseX / cols)) * rows);
+            div_info_1.append("Predict-response index: " + index + " <br>  ");
+            div_info_1.append('\n    value: ' + response_values[index]);
         });
     };
 };
-new p5(sketch);
+new p5(sketch, window.document.getElementById('div_grid'));
