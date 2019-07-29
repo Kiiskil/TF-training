@@ -74,6 +74,7 @@ var sketch = function (p: p5) {
                 );
             }
         };
+        //console.log(data);
         inputs = tf.tensor2d(data);
 
         model = tf.sequential();

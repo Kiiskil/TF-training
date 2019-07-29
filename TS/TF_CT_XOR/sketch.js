@@ -106,6 +106,7 @@ var sketch = function (p) {
             }
         }
         ;
+        console.log(data);
         inputs = tf.tensor2d(data);
         model = tf.sequential();
         var hidden = tf.layers.dense({

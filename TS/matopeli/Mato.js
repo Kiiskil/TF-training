@@ -1,6 +1,7 @@
 "use strict";
 exports.__esModule = true;
 var Palat_js_1 = require("./Palat.js");
+var TFNN_js_1 = require("./TFNN.js");
 var Mato = /** @class */ (function () {
     function Mato() {
         this.pisteet = 0;
@@ -15,15 +16,16 @@ var Mato = /** @class */ (function () {
         for (var i = 0; i < 2; i++) {
             this.kroppa.push(new Palat_js_1.MatoPala(i, 5));
         }
+        this.aivot = new TFNN_js_1["default"](3600, 1800, 4);
+        console.log("Mato luotu");
     }
     Mato.prototype.Liiku = function (suunta) {
         var lastIndex = this.kroppa.length - 1;
-        //Tee uusi MatoPala siihen suuntaan, johon pelaaja on käskenyt
-        console.log(suunta);
-        if (suunta === "a" ||
-            suunta === "d" ||
-            suunta === "w" ||
-            suunta === "s") {
+        this.suunta = suunta;
+        if (this.suunta === "a" ||
+            this.suunta === "d" ||
+            this.suunta === "w" ||
+            this.suunta === "s") {
             //y-akselin suunta-stringiin lisätty alaviiva neljän parin saamiseksi (pareilla kutsutaan suunnanvalitsimia)
             var suunnat = {
                 "a": -1,
@@ -35,11 +37,11 @@ var Mato = /** @class */ (function () {
                 "d": +1,
                 "_d": 0
             };
-            console.log(suunnat[suunta]);
             this.kroppa.push(new Palat_js_1.MatoPala(this.kroppa[lastIndex].x_sijainti + suunnat[suunta], this.kroppa[lastIndex].y_sijainti + suunnat["_" + suunta]));
-            //this.paivitaKroppa();
         }
         ;
+        //console.log(this.kroppa.length +" X: "+this.kroppa[lastIndex].x_sijainti+" Y: "+this.kroppa[lastIndex].y_sijainti + " Index: "+lastIndex )
+        console.log(this.kroppa);
     };
     Mato.prototype.OsumaTarkistus = function (lauta) {
         var lastIndex = this.kroppa.length - 1;
@@ -75,9 +77,6 @@ var Mato = /** @class */ (function () {
             this.pisteet += 2;
             return true;
         }
-    };
-    Mato.prototype.paivitaKroppa = function () {
-        //Canvas-sijainnin päivitys
     };
     Mato.prototype.piirra = function (ctx) {
         var _this = this;

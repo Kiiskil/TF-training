@@ -74,7 +74,7 @@ export class Omena extends Pala {
     }
     getFace():void{
         this.faceInd  = getRandomIntInclusive(1, Object.keys(this.faces[0]).length);
-        console.log(Object.keys(this.faces[0]).length);
+        //console.log(Object.keys(this.faces[0]).length);
     }
     piirra(ctx:CanvasRenderingContext2D){
         this.x_coord = this.x_koko * this.x_sijainti;

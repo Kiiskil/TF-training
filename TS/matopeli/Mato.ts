@@ -1,12 +1,14 @@
 import {MatoPala} from "./Palat.js"
 import Lauta from "./Lauta.js"
 import {Omena} from "./Palat.js"
+import NeuralNetwork from "./TFNN.js"
 
 export default class Mato {
     //Madon palat tallennetaan arrayhin (vika on pää)
     kroppa: MatoPala[];
     pisteet:number = 0;
     suunta:string;
+    aivot: NeuralNetwork;
 
     faces = {
         //Alle tietyn pisterajan (key)
@@ -20,10 +22,11 @@ export default class Mato {
         for(let i = 0; i < 2; i++){
             this.kroppa.push(new MatoPala(i,5))
         }
+        this.aivot = new NeuralNetwork(3600,1800,4);
+        console.log("Mato luotu");
     }
     Liiku(suunta:string):void {
         let lastIndex = this.kroppa.length-1;
-        //Tee uusi MatoPala siihen suuntaan, johon pelaaja on käskenyt
         this.suunta = suunta;
         if(this.suunta === "a" ||
         this.suunta === "d" ||
@@ -45,8 +48,9 @@ export default class Mato {
                 new MatoPala(this.kroppa[lastIndex].x_sijainti + suunnat[suunta], 
                 this.kroppa[lastIndex].y_sijainti + suunnat["_"+suunta])
             );
-            //this.paivitaKroppa();
         };
+        //console.log(this.kroppa.length +" X: "+this.kroppa[lastIndex].x_sijainti+" Y: "+this.kroppa[lastIndex].y_sijainti + " Index: "+lastIndex )
+        console.log(this.kroppa);
     }
     OsumaTarkistus(lauta:Lauta):boolean{
         let lastIndex = this.kroppa.length-1;
@@ -84,10 +88,6 @@ export default class Mato {
         } 
     }
 
-    paivitaKroppa(){
-        //Canvas-sijainnin päivitys
-        
-    }
     piirra(ctx:CanvasRenderingContext2D){
         let lastIndex = this.kroppa.length;
         

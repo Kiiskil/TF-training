@@ -76,7 +76,7 @@ var Omena = /** @class */ (function (_super) {
     };
     Omena.prototype.getFace = function () {
         this.faceInd = getRandomIntInclusive(1, Object.keys(this.faces[0]).length);
-        console.log(Object.keys(this.faces[0]).length);
+        //console.log(Object.keys(this.faces[0]).length);
     };
     Omena.prototype.piirra = function (ctx) {
         this.x_coord = this.x_koko * this.x_sijainti;
