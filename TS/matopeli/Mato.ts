@@ -24,6 +24,7 @@ export default class Mato {
         }
         this.aivot = new NeuralNetwork(3600,1800,4);
         //console.log("Mato luotu");
+        console.log(this.kroppa[0].x_sijainti)
     }
     Liiku(suunta:string):void {
         let lastIndex = this.kroppa.length-1;
@@ -82,7 +83,7 @@ export default class Mato {
         }
         else{
             //Älä poista palaa, koska omena syöty
-            console.log("omena syöty");
+            //console.log("omena syöty");
             this.pisteet += 2;
             return true;
         } 

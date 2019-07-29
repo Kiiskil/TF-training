@@ -7,7 +7,6 @@ var GameWindow_js_1 = require("./GameWindow.js");
 var Chance = require("chance");
 //Tee canvas-divin koosta dynaamiesti muuttuva
 //Ompun ilmestymisen sijainti voi jäädä looppaa jos tilaa ei ole (rakenna jonkinlainen pick-järjestelmä)
-//kaksi gameover-boolean-tarkistusta
 //Tee niin, että matoja ja omenia voi olla useampi kentällä. Tätä varten NN input ei voi olla pixelidata kentästä
 //tosin riittää jos vain yksi näytetään
 var suunta;
@@ -37,13 +36,8 @@ function Piirra(lauta, canvas, timer) {
         //osuuko mato mihinkään
         gameover = mato.OsumaTarkistus(lauta);
         uusiOmppu = mato.SoikoOmenan(omena);
-        if (gameover) {
-            console.log("Mato kuoli");
-            gameover = false;
-            GameOver(timer, mato.pisteet);
-        }
         if (uusiOmppu) {
-            console.log("uusi omena");
+            //console.log("uusi omena");
             omena.x_sijainti = getRandomIntInclusive(0, canvas.x_koko - 1);
             omena.y_sijainti = getRandomIntInclusive(0, canvas.y_koko - 1);
             omena.getFace();
@@ -55,6 +49,11 @@ function Piirra(lauta, canvas, timer) {
                     osuma = omena.tarkistaMato(mato);
                 } while (osuma);
             }
+        }
+        if (gameover) {
+            //console.log("Mato kuoli")
+            gameover = false;
+            GameOver(timer, mato.pisteet);
         }
     }
     //Päivitä pisteet näytölle
@@ -90,13 +89,14 @@ function init() {
     var timer = setInterval(function () { return Piirra(lauta, canvas, timer); }, canvas.interVal);
     //Piirra(lauta,canvas);
 }
+;
 init();
 //Add event listener for keypresses
 document.addEventListener('keypress', function (event) {
     //Peli käynnistyy kun pelaaja antaa suunnan
     if (event.key === "w" || event.key === "a" || event.key === "s" || event.key === "d") {
         suunta = event.key;
-        console.log("nappia painettu");
+        //console.log("nappia painettu");
         //Pelkkä piirra() ilman intervalia ja gameoveria mahdollistaa liikkumisen haluttaessa
         Piirra(lauta, canvas);
     }

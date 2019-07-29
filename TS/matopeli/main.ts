@@ -8,7 +8,6 @@ import * as _ from "lodash"; //External library named lodash
 
 //Tee canvas-divin koosta dynaamiesti muuttuva
 //Ompun ilmestymisen sijainti voi jäädä looppaa jos tilaa ei ole (rakenna jonkinlainen pick-järjestelmä)
-//kaksi gameover-boolean-tarkistusta
 //Tee niin, että matoja ja omenia voi olla useampi kentällä. Tätä varten NN input ei voi olla pixelidata kentästä
 //tosin riittää jos vain yksi näytetään
 
@@ -41,11 +40,6 @@ function Piirra(lauta:Lauta, canvas:GameWindow,timer?:number){
         //osuuko mato mihinkään
         gameover = mato.OsumaTarkistus(lauta);
         uusiOmppu = mato.SoikoOmenan(omena);
-        if(gameover){
-            //console.log("Mato kuoli")
-            gameover = false;
-            GameOver(timer,mato.pisteet);
-        }
         if(uusiOmppu){
             //console.log("uusi omena");
             omena.x_sijainti = getRandomIntInclusive(0,canvas.x_koko-1);
@@ -60,6 +54,11 @@ function Piirra(lauta:Lauta, canvas:GameWindow,timer?:number){
                 }
                 while(osuma);
             }
+        }
+        if(gameover){
+            //console.log("Mato kuoli")
+            gameover = false;
+            GameOver(timer,mato.pisteet);
         }
     }
     //Päivitä pisteet näytölle
@@ -98,7 +97,7 @@ function init(){
     //eka piirto
     let timer = setInterval(()=> Piirra(lauta,canvas,timer), canvas.interVal);
     //Piirra(lauta,canvas);
-}
+};
 init();
 //Add event listener for keypresses
 document.addEventListener('keypress', (event) =>{

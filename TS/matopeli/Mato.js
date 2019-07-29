@@ -18,6 +18,7 @@ var Mato = /** @class */ (function () {
         }
         this.aivot = new TFNN_js_1["default"](3600, 1800, 4);
         //console.log("Mato luotu");
+        console.log(this.kroppa[0].x_sijainti);
     }
     Mato.prototype.Liiku = function (suunta) {
         var lastIndex = this.kroppa.length - 1;
@@ -73,7 +74,7 @@ var Mato = /** @class */ (function () {
         }
         else {
             //Älä poista palaa, koska omena syöty
-            console.log("omena syöty");
+            //console.log("omena syöty");
             this.pisteet += 2;
             return true;
         }
