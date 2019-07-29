@@ -23,7 +23,7 @@ export default class Mato {
             this.kroppa.push(new MatoPala(i,5))
         }
         this.aivot = new NeuralNetwork(3600,1800,4);
-        console.log("Mato luotu");
+        //console.log("Mato luotu");
     }
     Liiku(suunta:string):void {
         let lastIndex = this.kroppa.length-1;
@@ -50,7 +50,7 @@ export default class Mato {
             );
         };
         //console.log(this.kroppa.length +" X: "+this.kroppa[lastIndex].x_sijainti+" Y: "+this.kroppa[lastIndex].y_sijainti + " Index: "+lastIndex )
-        console.log(this.kroppa);
+        //console.log(this.kroppa);
     }
     OsumaTarkistus(lauta:Lauta):boolean{
         let lastIndex = this.kroppa.length-1;
@@ -122,6 +122,7 @@ export default class Mato {
                 }
             }
             ctx.closePath();
-        });
+        })
+        //console.log("Mato piirretty");
     }
 }

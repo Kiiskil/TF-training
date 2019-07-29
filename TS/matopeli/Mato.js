@@ -17,7 +17,7 @@ var Mato = /** @class */ (function () {
             this.kroppa.push(new Palat_js_1.MatoPala(i, 5));
         }
         this.aivot = new TFNN_js_1["default"](3600, 1800, 4);
-        console.log("Mato luotu");
+        //console.log("Mato luotu");
     }
     Mato.prototype.Liiku = function (suunta) {
         var lastIndex = this.kroppa.length - 1;
@@ -41,7 +41,7 @@ var Mato = /** @class */ (function () {
         }
         ;
         //console.log(this.kroppa.length +" X: "+this.kroppa[lastIndex].x_sijainti+" Y: "+this.kroppa[lastIndex].y_sijainti + " Index: "+lastIndex )
-        console.log(this.kroppa);
+        //console.log(this.kroppa);
     };
     Mato.prototype.OsumaTarkistus = function (lauta) {
         var lastIndex = this.kroppa.length - 1;
@@ -107,6 +107,7 @@ var Mato = /** @class */ (function () {
             }
             ctx.closePath();
         });
+        //console.log("Mato piirretty");
     };
     return Mato;
 }());

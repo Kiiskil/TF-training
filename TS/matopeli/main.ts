@@ -33,21 +33,21 @@ function Piirra(lauta:Lauta, canvas:GameWindow,timer?:number){
     canvas.ctx.clearRect(0,0, canvas.canvas.width, canvas.canvas.height);
     if(suunta){
         //jos madolla on suunta
-        mato.Liiku(suunta);
-        console.log("mato liikkuu pääohjelmassa");
+        mato.Liiku(mato.aivot.predict(lauta.getPixelData(canvas)));
+        //mato.Liiku(suunta);
+        //console.log("mato liikkuu pääohjelmassa");
         let uusiOmppu: boolean;
         let gameover: boolean;
         //osuuko mato mihinkään
         gameover = mato.OsumaTarkistus(lauta);
         uusiOmppu = mato.SoikoOmenan(omena);
         if(gameover){
-            console.log(mato.kroppa[0].x_sijainti)
+            //console.log("Mato kuoli")
             gameover = false;
             GameOver(timer,mato.pisteet);
-            
         }
         if(uusiOmppu){
-            console.log("uusi omena");
+            //console.log("uusi omena");
             omena.x_sijainti = getRandomIntInclusive(0,canvas.x_koko-1);
             omena.y_sijainti = getRandomIntInclusive(0,canvas.y_koko-1);
             omena.getFace();
@@ -64,7 +64,7 @@ function Piirra(lauta:Lauta, canvas:GameWindow,timer?:number){
     }
     //Päivitä pisteet näytölle
     document.getElementById("pisteet").innerHTML = "Pisteet: "+ mato.pisteet.toString();
-    console.log("//Piirrä oliot näytölle");
+    //console.log("//Piirrä oliot näytölle");
     lauta.piirra(canvas.ctx);
     mato.piirra(canvas.ctx);
     omena.piirra(canvas.ctx);
@@ -95,8 +95,9 @@ function init(){
     }
     lauta.mato = mato;
     lauta.omena = omena;
-    console.log("//eka piirto");
-    Piirra(lauta,canvas);
+    //eka piirto
+    let timer = setInterval(()=> Piirra(lauta,canvas,timer), canvas.interVal);
+    //Piirra(lauta,canvas);
 }
 init();
 //Add event listener for keypresses
@@ -104,15 +105,9 @@ document.addEventListener('keypress', (event) =>{
     //Peli käynnistyy kun pelaaja antaa suunnan
     if(event.key === "w" || event.key === "a" || event.key === "s" || event.key === "d"){
         suunta = event.key;
-        console.log("nappia painettu");
-            //Pyöritetään peliä kunnes gameover
-            //Pelkkä piirra() ilman intervalia ja gameoveria mahdollistaa liikkumisen haluttaessa
-            //Piirra(lauta,canvas);
-            let timer = setInterval(()=>{
-                suunta = lauta.mato.aivot.predict(lauta.getPixelData(canvas));
-                Piirra(lauta,canvas,timer), canvas.interVal;
-            });
-            //gameOver = true;
+        //console.log("nappia painettu");
+        //Pelkkä piirra() ilman intervalia ja gameoveria mahdollistaa liikkumisen haluttaessa
+        Piirra(lauta,canvas);
     }
     else{
         alert("WASD-napeilla liikkuu");
